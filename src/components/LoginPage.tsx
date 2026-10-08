@@ -158,7 +158,10 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         const { data: profile, error: fetchError } = await supabase.from('profiles').select('*').eq('student_id', studentId).maybeSingle();
         if (fetchError) throw new Error(fetchError.message);
         if (!profile) throw new Error(`No account found for ID: ${studentId}. Please register or ask your CR.`);
-        if (profile.password_hash !== signInPassword) throw new Error('Incorrect password. Please try again.');
+        // Trim whitespace and normalize case — mobile keyboards auto-capitalize and add trailing spaces
+        const enteredPassword = signInPassword.trim().toUpperCase();
+        const storedPassword = (profile.password_hash || '').trim().toUpperCase();
+        if (storedPassword !== enteredPassword) throw new Error('Incorrect password. Please try again.');
 
         await supabase.from('profiles').update({ last_login_at: new Date().toISOString() }).eq('id', profile.id);
 
@@ -284,6 +287,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
                   <BadgeCheck className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input type="text" required placeholder="e.g. ROHAN-D9B-28" value={signInId}
                     onChange={(e) => setSignInId(e.target.value.toUpperCase())}
+                    autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username"
                     className="w-full pl-10 pr-4 py-2 text-sm uppercase font-mono rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400" />
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1">Format: <span className="font-mono text-slate-600">NAME-CLASS-ROLLNO</span></p>
@@ -301,6 +305,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input type="password" required placeholder="••••••••" value={signInPassword}
                     onChange={(e) => setSignInPassword(e.target.value)}
+                    autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="current-password"
                     className="w-full pl-10 pr-4 py-2 text-sm rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400" />
                 </div>
               </div>
