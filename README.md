@@ -1,10 +1,10 @@
-# CLASS_TRACKER
+# ROSTER
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?logo=supabase&logoColor=white)
 
-**CLASS_TRACKER** is a robust, centralized web application engineered specifically for Class Representatives (CRs) and students. It eliminates the chaos of scattered WhatsApp messages and spreadsheets by providing a unified dashboard to track, manage, and monitor academic assignments, lab submission deadlines, and important class announcements.
+**ROSTER** is a robust, centralized web application engineered specifically for Class Representatives (CRs) and students. It eliminates the chaos of scattered WhatsApp messages and spreadsheets by providing a unified dashboard to track, manage, and monitor academic assignments, lab submission deadlines, and important class announcements.
 
 ---
 
