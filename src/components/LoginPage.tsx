@@ -105,20 +105,47 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         if (!name.trim() || !className.trim() || !rollNo.trim()) throw new Error('Please fill in all required fields');
         if (!signUpPassword || signUpPassword.length < 4) throw new Error('Password must be at least 4 characters');
 
+        const cleanRoll = parseInt(rollNo.trim().replace(/[^0-9]/g, ''), 10);
+        if (isNaN(cleanRoll) || cleanRoll < 1) throw new Error('Please enter a valid roll number.');
+
+        // Block excluded roll numbers
+        const EXCLUDED_ROLLS = [17, 68];
+        if (EXCLUDED_ROLLS.includes(cleanRoll)) throw new Error(`Roll number ${cleanRoll} does not exist in this class. Please check your roll number.`);
+
+        // Enforce batch-specific roll number ranges
+        const BATCH_RANGES: Record<string, { min: number; max: number }> = {
+          'Batch A': { min: 1, max: 24 },
+          'Batch B': { min: 25, max: 48 },
+          'Batch C': { min: 49, max: 71 },
+        };
+        const range = BATCH_RANGES[batch];
+        if (!range) throw new Error('Invalid batch selected.');
+        if (cleanRoll < range.min || cleanRoll > range.max) {
+          throw new Error(
+            `Roll number ${cleanRoll} does not belong to ${batch}. ` +
+            `${batch} covers rolls ${range.min}–${range.max} (excl. 17 & 68).`
+          );
+        }
+
         const studentId = generatedStudentId;
-        const { data: existingUser } = await supabase.from('profiles').select('id').eq('student_id', studentId).maybeSingle();
-        if (existingUser) throw new Error(`Student ID ${studentId} is already registered. Please sign in.`);
 
         const newUserId = crypto.randomUUID();
         const { error: insertError } = await supabase.from('profiles').insert([{
           id: newUserId, student_id: studentId,
           student_name: name.trim(),
-          full_name: `${name.trim()} (${className.trim().toUpperCase()}-${rollNo.trim()})`,
-          class_name: className.trim().toUpperCase(), roll_number: rollNo.trim(),
+          full_name: `${name.trim()} (${className.trim().toUpperCase()}-${cleanRoll})`,
+          class_name: className.trim().toUpperCase(), roll_number: String(cleanRoll),
           password_hash: signUpPassword, role: 'Student', batch,
           last_login_at: new Date().toISOString(), created_at: new Date().toISOString(),
         }]);
-        if (insertError) throw new Error(insertError.message);
+
+        // Handle duplicate roll/student_id violations (from DB UNIQUE constraint)
+        if (insertError) {
+          if (insertError.code === '23505') {
+            throw new Error(`Roll number ${cleanRoll} is already registered. This roll number belongs to an existing student. Please sign in instead.`);
+          }
+          throw new Error(insertError.message);
+        }
 
         const sessionUser = { id: newUserId, student_id: studentId, role: 'Student', batch, full_name: name.trim() };
         localStorage.setItem('class_tracker_session', JSON.stringify(sessionUser));
