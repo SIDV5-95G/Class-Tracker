@@ -1,7 +1,7 @@
 -- ==============================================================================
 -- SEED 69 STUDENTS AND CRS FOR CLASS TRACKER (D9B)
 -- Roll 17 and Roll 68 are excluded
--- Roll 39 (SHRUTI NAIR) and Roll 51 (VEDANG PATIL) are CR
+-- Roll 39 (SHRUTHI NAIR) and Roll 51 (VEDANG PATIL) are CR
 -- Username and Password are set to <FIRSTNAME>-D9B-<ROLLNO>
 -- ==============================================================================
 
@@ -48,7 +48,7 @@ VALUES
   (gen_random_uuid(), 'TAANAAY-D9B-36', 'Taanaay Moharil', 'Taanaay Moharil (D9B-36)', 'D9B', '36', 'TAANAAY-D9B-36', 'Student', 'Batch B', NOW()),
   (gen_random_uuid(), 'SOHAM-D9B-37', 'Soham Mukherjee', 'Soham Mukherjee (D9B-37)', 'D9B', '37', 'SOHAM-D9B-37', 'Student', 'Batch B', NOW()),
   (gen_random_uuid(), 'MALISHKA-D9B-38', 'Malishka Naik', 'Malishka Naik (D9B-38)', 'D9B', '38', 'MALISHKA-D9B-38', 'Student', 'Batch B', NOW()),
-  (gen_random_uuid(), 'SHRUTI-D9B-39', 'Shruti Nair', 'Shruti Nair (D9B-39)', 'D9B', '39', 'SHRUTI-D9B-39', 'CR', 'Batch B', NOW()),
+  (gen_random_uuid(), 'SHRUTHI-D9B-39', 'Shruthi Nair', 'Shruthi Nair (D9B-39)', 'D9B', '39', 'SHRUTHI-D9B-39', 'CR', 'Batch B', NOW()),
   (gen_random_uuid(), 'NANDINI-D9B-40', 'Nandini A', 'Nandini A (D9B-40)', 'D9B', '40', 'NANDINI-D9B-40', 'Student', 'Batch B', NOW()),
   (gen_random_uuid(), 'MANAS-D9B-41', 'Manas Narkar', 'Manas Narkar (D9B-41)', 'D9B', '41', 'MANAS-D9B-41', 'Student', 'Batch B', NOW()),
   (gen_random_uuid(), 'PARTH-D9B-42', 'Parth Nemade', 'Parth Nemade (D9B-42)', 'D9B', '42', 'PARTH-D9B-42', 'Student', 'Batch B', NOW()),
